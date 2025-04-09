@@ -1,32 +1,12 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Login</title>
-    </head>
-    <body>
-        <?php 
+<?php 
+            
+            session_start(); 
+
             //inicio conexcion con BDD
-            session_start();
             require_once "conexion.inc.php";
             
-        ?>
-        <h2>Login</h2>
-
-        <form action="login.php" method="post">
-            <label for="username">Username:</label><br>
-            <input type="text" id="username" name="username" required><br><br>
-
-            <label for="password">Password:</label><br>
-            <input type="password" id="password" name="password" required><br><br>
-
-            <input type="submit" value="Login">
             
-        </form>
-        <form action="Register.php">
-            <input type="submit" value="Register">
-        </form>
-        <?php 
-        //me aseguro que el usuario haya apretado login
+            //me aseguro que el usuario haya apretado login
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             //obtengo los datos de los inputs
             $user = $_POST['username'] ?? '';
@@ -60,9 +40,35 @@
                 }
             }
         }
-
-
+?>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login</title>
+    </head>
+    <body>
+        <?php 
+            
+            //usar el enviroment
+    
+            
         ?>
+        <h2>Login</h2>
+
+        <form action="login.php" method="post">
+            <label for="username">Username:</label><br>
+            <input type="text" id="username" name="username" required><br><br>
+
+            <label for="password">Password:</label><br>
+            <input type="password" id="password" name="password" required><br><br>
+
+            <input type="submit" value="Login">
+            
+        </form>
+        <form action="Register.php">
+            <input type="submit" value="Register">
+        </form>
+        
 
 
     </body>

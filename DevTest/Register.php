@@ -5,7 +5,7 @@
 </head>
 <body>
 <?php
-    require 'vendor\autoload.php';
+    require_once __DIR__ . '/vendor/autoload.php';
     //inicio conexcion con la BDD
     require_once "conexion.inc.php";
     //uso el mailer para enviar emails

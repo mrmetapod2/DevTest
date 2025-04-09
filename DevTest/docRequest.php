@@ -1,5 +1,5 @@
 <?php
-require 'vendor\autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 require_once "conexion.inc.php";
 //uso el mailer para enviar emails
 use PHPMailer\PHPMailer\PHPMailer;
@@ -49,7 +49,7 @@ $dotenv->load();
         
             
             $mail->send();
-            echo 'Email sent!';
+            
         } catch (Exception $e) {
             echo "Mailer Error: {$mail->ErrorInfo}";
         }

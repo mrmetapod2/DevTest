@@ -3,7 +3,7 @@ session_start();
 require_once "conexion.inc.php";
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-require 'vendor\autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 //usar el enviroment
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $mail->Body = "new ticket '{$ticketName}' has been submitted by user ID: '{$userID}'.";
 
                     $mail->send();
-                    echo 'Email sent!';
+                    
                 } catch (Exception $e) {
                     echo "Mailer Error: {$mail->ErrorInfo}";
                 }
