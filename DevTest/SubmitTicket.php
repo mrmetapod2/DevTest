@@ -4,6 +4,9 @@ require_once "conexion.inc.php";
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 require 'vendor\autoload.php';
+//usar el enviroment
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     //extraigo los datos del psot
@@ -16,8 +19,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $userID = $_POST['UserID'];
     
 
-    // subo el archivo adjunto
-    if (isset($_FILES['Document']) && $_FILES['Document']['error'] === UPLOAD_ERR_OK) {
+    // se ve si hubo un error o no
+    if ($_FILES['Document']['error'] === UPLOAD_ERR_OK) {
 
         $fileTmp = $_FILES['Document']['tmp_name'];
         $fileName = basename($_FILES['Document']['name']);
@@ -36,13 +39,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             //se sube el archivo a uploads
             if (move_uploaded_file($fileTmp, $uploadPath)) {
                 // es insertado a la base de datos
-                $sql ="INSERT INTO tickets (TicketName, TicketType, ModeOfTransport, CountryOrigin, CountryDestination, User_UserID, Document, Status ) VALUES ('{$ticketName}', {$ticketType}, '{$mode}', '{$origin}', '{$destination}', '{$userID}', '{$uploadPath}',1)";
+                $sql ="INSERT INTO tickets (TicketName, TicketType, ModeOfTransport, CountryOrigin, CountryDestination, User_UserID,  Status ) VALUES ('{$ticketName}', {$ticketType}, '{$mode}', '{$origin}', '{$destination}', '{$userID}', 1)";
+                $result = $linkConexion->query($sql);
+                $lastId = $linkConexion->insert_id;
+                
+                $sql="INSERT INTO `documents`( `documentLocation`, `idTicket`) VALUES ('{$uploadPath}','{$lastId}')";
                 $result = $linkConexion->query($sql);
                 //se envia un mail a todos los agentes informadoles del nuevo ticket
                 $mail = new PHPMailer(true);
 
                 try {
                     $mail->isSMTP();
+                    $mail->isHTML(true);
                     $mail->Host = $_ENV['MAIL_HOST'];
                     $mail->SMTPAuth = true;
                     $mail->Username = $_ENV['MAIL_USERNAME']; 

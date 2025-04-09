@@ -12,8 +12,7 @@ $sql = "
         cd.CountriesName AS CountryDestinationName,
         u.UserName,
         u.UserEmail,
-        ts.TicketStatusName,
-        t.Document
+        ts.TicketStatusName
     FROM tickets t
     JOIN modes_of_transport mt ON t.ModeOfTransport = mt.idModesOfTransport
     JOIN countries co ON t.CountryOrigin = co.idCountries
@@ -60,11 +59,13 @@ if (!$result) {
                 <td><?= htmlspecialchars($row['UserName']) ?></td>
                 <td><?= htmlspecialchars($row['TicketStatusName']) ?></td>
                 <td>
-                    <?php if ($row['Document']): ?>
-                        <a href="<?= htmlspecialchars($row['Document']) ?>" target="_blank">View</a>
-                    <?php else: ?>
-                        No File
-                    <?php endif; ?>
+                    
+                    <form method="post" action="viewDocuments.php" style="display:inline;">
+                            <input type="hidden" name="id" value="<?= $row['idTickets'] ?>">
+                           
+                            <button type="submit">View</button>
+                    </form>
+                    
                 </td>
                 <td class="actions">
                     <?php if($row['Status']==1 ){?>
@@ -76,7 +77,7 @@ if (!$result) {
                             <button type="submit">Accept</button>
                         </form>
                     <?php  } ?>
-                    <?php if($row['Status']!=3){?>
+                    <?php if($row['Status']!=3):?>
                     <form method="post" action="docRequest.php" style="display:inline;">
                         <input type="hidden" name="id" value="<?= $row['idTickets'] ?>">
                         <input type="hidden" name="email" value="<?= htmlspecialchars($row['UserEmail']) ?>">
@@ -91,7 +92,7 @@ if (!$result) {
                            
                             <button type="submit">Complete</button>
                         </form>
-                    <?php  } ?>
+                    <?php  endif ?>
                 </td>
             </tr>
         <?php endwhile; ?>

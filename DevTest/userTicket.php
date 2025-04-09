@@ -3,7 +3,6 @@ session_start();
 require_once "conexion.inc.php";
 
 // conseguir data dropdown
-$types = $linkConexion->query("SELECT * FROM ticket_type");
 $modes = $linkConexion->query("SELECT * FROM modes_of_transport");
 $countries = $linkConexion->query("SELECT * FROM countries");
 

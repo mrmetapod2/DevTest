@@ -24,6 +24,7 @@ $dotenv->load();
         try {
             
             $mail->isSMTP();
+            $mail->isHTML(true);
             $mail->Host = $_ENV['MAIL_HOST'];
             $mail->SMTPAuth = true;
             $mail->Username = $_ENV['MAIL_USERNAME']; 
@@ -34,14 +35,18 @@ $dotenv->load();
             
             $mail->setFrom( $_ENV['MAIL_FROM_ADDRESS'],  $_ENV['MAIL_FROM_NAME']);
             $mail->addAddress($userEmail, 'Receiver');
-            if($status==2){
-                $mail->Subject = 'Ticket is now In progress';
-                $mail->Body = "your ticket with id {$ticketId} is now In progess";
-           }
-           else if($status==3){
-                $mail->Subject = 'Ticket is now Completed';
-                $mail->Body = "your ticket with id {$ticketId} is now Completed";
-           }
+            $url= $_ENV['APP_URL'];
+            $mail->Subject = 'Documentation requested for ticket';
+            $mail->Body = "
+                <p>Hello {$name},</p>
+                <p>Your ticket with ID {$ticketId} requires additional documentation.</p>
+                <p>
+                    <a href='{$url}/addDocumentation.php?ticketId={$ticketId}'>
+                        Click here to upload documentation
+                    </a>
+                </p>
+            ";
+        
             
             $mail->send();
             echo 'Email sent!';

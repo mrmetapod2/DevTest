@@ -30,6 +30,7 @@ $dotenv->load();
         try {
             
             $mail->isSMTP();
+            $mail->isHTML(true);
             $mail->Host = $_ENV['MAIL_HOST'];
             $mail->SMTPAuth = true;
             $mail->Username = $_ENV['MAIL_USERNAME']; 
