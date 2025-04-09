@@ -1,10 +1,13 @@
 <?php
+  //usar el enviroment
+  $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+  $dotenv->load();
   //para el mysql instalado con Wamp, estos son los datos de conexion
   //$Host = '127.0.0.1';
-  $Host = 'localhost';
-  $User = 'root';
-  $Password = '';
-  $BaseDeDatos='test_dev';  
+  $Host = $_ENV["DB_HOST"];
+  $User = $_ENV["DB_USERNAME"];
+  $Password = $_ENV["DB_PASSWORD"];
+  $BaseDeDatos=$_ENV["DB_DATABASE"];  
 
   //procedo al intento de conexion con esos parametros
   $linkConexion = mysqli_connect($Host, $User, $Password, $BaseDeDatos);

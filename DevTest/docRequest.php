@@ -41,7 +41,7 @@ $dotenv->load();
                 <p>Hello {$name},</p>
                 <p>Your ticket with ID {$ticketId} requires additional documentation.</p>
                 <p>
-                    <a href='{$url}/addDocumentation.php?ticketId={$ticketId}'>
+                    <a href='{$url}addDocumentation.php?ticketId={$ticketId}'>
                         Click here to upload documentation
                     </a>
                 </p>
