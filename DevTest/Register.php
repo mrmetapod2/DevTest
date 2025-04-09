@@ -5,11 +5,16 @@
 </head>
 <body>
 <?php
+    require 'vendor\autoload.php';
     //inicio conexcion con la BDD
     require_once "conexion.inc.php";
+    //uso el mailer para enviar emails
     use PHPMailer\PHPMailer\PHPMailer;
     use PHPMailer\PHPMailer\Exception;
-    require 'vendor\autoload.php';
+    
+    //usar el enviroment
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+    $dotenv->load();
     
     ?>
 
@@ -47,7 +52,7 @@
         $acc_type = $_POST['account_type'] ?? '';
        
         //obtengo los datos ingresados
-        
+       
 
         // valido la contraseña para que sea segura
         $uppercase = preg_match('@[A-Z]@', $pass);
@@ -80,22 +85,26 @@
        
 
         $mail = new PHPMailer(true);
+        
+       
 
         try {
+            
             $mail->isSMTP();
-            $mail->Host = 'sandbox.smtp.mailtrap.io';
+            $mail->Host = $_ENV['MAIL_HOST'];
             $mail->SMTPAuth = true;
-            $mail->Username = '47e41fee27bc84'; // usuario Mailtrap
-            $mail->Password = '1ea45e35d51691'; // contraseña Mailtrap
-            $mail->Port = 2525; // mailtrap pone multiples opciones
+            $mail->Username = $_ENV['MAIL_USERNAME']; 
+            $mail->Password = $_ENV['MAIL_PASSWORD']; 
+            $mail->Port =  $_ENV['MAIL_PORT'];
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-
-            $mail->setFrom('from@example.com', 'DevTest');
+            
+            
+            $mail->setFrom( $_ENV['MAIL_FROM_ADDRESS'],  $_ENV['MAIL_FROM_NAME']);
             $mail->addAddress($email, 'Receiver');
-
+            
             $mail->Subject = 'Account registtration succesful';
             $mail->Body = "the account of the user '{$user}' has been registered succesfully.";
-
+            
             $mail->send();
             echo 'Email sent!';
         } catch (Exception $e) {

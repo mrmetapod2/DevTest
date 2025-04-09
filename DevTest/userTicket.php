@@ -30,9 +30,11 @@ if (!$userID) {
 
         <label for="TicketType">Ticket Type:</label><br>
         <select id="TicketType" name="TicketType" required>
-            <?php while ($row = $types->fetch_assoc()): ?>
-                <option value="<?= $row['TicketTypeID'] ?>"><?= $row['TicketTypeName'] ?></option>
-            <?php endwhile; ?>
+            
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+            
         </select><br><br>
 
         <label for="ModeOfTransport">Mode of Transport:</label><br>
